@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @desc StringCoder
+ * @desc ListCoder
  *
- * @category  StringCoder.class.php
+ * @category  ListCoder.class.php
  * @package   
  * @author fangyuan <fangyuan@yy.com>
  * @version  2014-6-24 fangyuan Exp $
@@ -17,8 +17,8 @@ namespace bma\common\esp\coder\impl;
 
 use \bma\common\esp\coder as coder;
 
-class StringCoder implements coder\BaseCoder {
-    
+class ListCoder implements coder\BaseCoder {
+
     private static $_instance;
 
     function __construct() {
@@ -27,7 +27,7 @@ class StringCoder implements coder\BaseCoder {
 
     /**
      * 
-     * @return \bma\common\esp\coder\impl\StringCoder
+     * @return \bma\common\esp\coder\impl\ListCoder
      */
     public static function getInstance() {
         if (!isset(self::$_instance)) {
@@ -38,22 +38,33 @@ class StringCoder implements coder\BaseCoder {
 
     public function decoder($buf) {
         if ($buf instanceof coder\ByteArrayInputStream) {
-            $bytes = array();
-            while($buf->available()>0){
-                $bytes[] = $buf->read();
+            $obj = array();
+            $coder = coder\impl\Int32Coder::getInstance();
+            $varCoder = coder\impl\VarCoder::getInstance();
+            $size = $coder->decoder($buf);
+            $mark = 1;
+            while ($mark <= $size) {
+                $obj[] = $varCoder->decoder($buf);
+                $mark++;
             }
-            return eval("return pack('c*', ". join(',', $bytes) .");");
+            return $obj;
         }
         throw new \Exception('not coder\ByteArrayInputStream type');
     }
 
     public function encoder($buf, $obj) {
         if ($buf instanceof coder\ByteArrayOutputStream) {
-            $bytes = unpack('c*',$obj);
-            foreach ($bytes as $byte) {
-                $buf->write($byte);
+            if ($obj == null) {
+                return;
             }
-            return ;
+            //map长度
+            $coder = coder\impl\Int32Coder::getInstance();
+            $varCoder = coder\impl\VarCoder::getInstance();
+            $coder->encoder($buf, count($obj));
+            foreach ($obj as $o) {
+                $varCoder->encoder($buf, $o);
+            }
+            return;
         }
         throw new \Exception('not coder\ByteArrayInputStream type');
     }

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @desc Int64Coder
+ * @desc Int32Coder
  *
- * @category  Int64Coder.class.php
+ * @category  Int32Coder.class.php
  * @package   
  * @author fangyuan <fangyuan@yy.com>
  * @version  2014-6-16 fangyuan Exp $
@@ -16,7 +16,7 @@
 namespace bma\common\esp\coder\impl;
 use \bma\common\esp\coder as coder;
 
-class Int64Coder implements coder\BaseCoder {
+class Int32Coder implements coder\BaseCoder {
 
     private static $_instance;
 
@@ -25,7 +25,7 @@ class Int64Coder implements coder\BaseCoder {
     }
     /**
      * 
-     * @return \bma\common\esp\coder\impl\Int64Coder
+     * @return \bma\common\esp\coder\impl\Int32Coder
      */
     public static function getInstance() {
         if (!isset(self::$_instance)) {
@@ -35,7 +35,7 @@ class Int64Coder implements coder\BaseCoder {
     }
 
     public function decoder($buf) {
-        $l = coder\impl\Uint64Coder::uint64Decoder($buf);
+        $l = coder\impl\UInt32Coder::uint64Decoder($buf);
         $l2 = $l >> 1;
         if(($l & 1) != 0){
                 $l2 = ~$l2;
@@ -49,7 +49,7 @@ class Int64Coder implements coder\BaseCoder {
             if($obj < 0){
                 $l = ~$l;
             }
-            return coder\impl\Uint64Coder::uint64Encoder($buf, $l);
+            return coder\impl\UInt32Coder::uint64Encoder($buf, $l);
         }
     }
     

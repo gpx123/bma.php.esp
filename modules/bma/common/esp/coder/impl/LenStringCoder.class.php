@@ -17,7 +17,7 @@ namespace bma\common\esp\coder\impl;
 
 use \bma\common\esp\coder as coder;
 
-class StringCoder implements coder\BaseCoder {
+class LenStringCoder implements coder\BaseCoder {
     
     private static $_instance;
 
@@ -27,7 +27,7 @@ class StringCoder implements coder\BaseCoder {
 
     /**
      * 
-     * @return \bma\common\esp\coder\impl\StringCoder
+     * @return \bma\common\esp\coder\impl\LenStringCoder
      */
     public static function getInstance() {
         if (!isset(self::$_instance)) {
@@ -38,10 +38,10 @@ class StringCoder implements coder\BaseCoder {
 
     public function decoder($buf) {
         if ($buf instanceof coder\ByteArrayInputStream) {
+            $int32Coder = coder\impl\Int32Coder::getInstance();
+            $i = $int32Coder->decoder($buf);
             $bytes = array();
-            while($buf->available()>0){
-                $bytes[] = $buf->read();
-            }
+            $buf->readByLen($bytes, 0, $i);
             return eval("return pack('c*', ". join(',', $bytes) .");");
         }
         throw new \Exception('not coder\ByteArrayInputStream type');
@@ -50,9 +50,11 @@ class StringCoder implements coder\BaseCoder {
     public function encoder($buf, $obj) {
         if ($buf instanceof coder\ByteArrayOutputStream) {
             $bytes = unpack('c*',$obj);
-            foreach ($bytes as $byte) {
-                $buf->write($byte);
-            }
+            $i = count($bytes);
+            $int32Coder = coder\impl\Int32Coder::getInstance();
+            $int32Coder->encoder($buf, $i);
+            $stringCoder = coder\impl\StringCoder::getInstance();
+            $stringCoder->encoder($buf, $obj);
             return ;
         }
         throw new \Exception('not coder\ByteArrayInputStream type');

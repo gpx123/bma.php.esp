@@ -7,10 +7,10 @@ echo "<pre>";
 use \bma\common\esp\coder as coder;
 use bma\common\esp\util as util;
 
-if (0) {
+if (1) {
     $bos = coder\ByteArrayOutputStream::getInstance();
-    $obj = true;
-    $coder = coder\impl\BooleanCoder::getInstance();
+    $obj = new coder\type\Boolean(true);
+    $coder = coder\impl\VarCoder::getInstance();
     $coder->encoder($bos, $obj);
     $bis = new coder\ByteArrayInputStream($bos->toByteArray());
     var_dump($coder->decoder($bis)) ;
