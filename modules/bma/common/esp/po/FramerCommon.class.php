@@ -13,30 +13,24 @@
  * 
  */
 
-namespace bma\common\esp\coder\po;
+namespace bma\common\esp\po;
 
 class VarTypeCommon {
     
     private static $_instance;
     
-    const TYPE_NULL = 0;
-    const TYPE_BOOLEAN = 1;
-    const TYPE_INT = 2;
-    const TYPE_INT8 = 3;
-    const TYPE_INT16 = 4;
-    const TYPE_INT32 = 5;
-    const TYPE_INT64 = 6;
-    const TYPE_UINT = 7;
-    const TYPE_UINT8 = 8;
-    const TYPE_UINT16 = 9;
-    const TYPE_UINT32 = 10;
-    const TYPE_UINT64 = 11;
-    const TYPE_FLOAT32 = 13;
-    const TYPE_FLOAT64 = 14;
-    const TYPE_LEN_BYTES = 17;
-    const TYPE_MAP = 21;
-    const TYPE_LIST = 23;
-    const TYPE_LEN_STRING = 24;
+    //ID
+    const  FRAMER_TYPE_ID = 0x11;
+    //源ID
+    const  FRAMER_TYPE_SID = 0x12;
+    //请求类型
+    const  FRAMER_TYPE_TYPE = 0x13;
+    //请求地址
+    const  FRAMER_TYPE_ADDRESS = 0x17;
+    //数据
+    const  FRAMER_TYPE_DATA = 0x15;
+    //错误
+    const  FRAMER_TYPE_ERROR = 0x1D;
 
     function __construct() {
         

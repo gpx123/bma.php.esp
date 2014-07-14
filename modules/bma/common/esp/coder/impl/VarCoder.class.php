@@ -17,7 +17,7 @@ namespace bma\common\esp\coder\impl;
 
 use \bma\common\esp\coder as coder;
 
-use bma\common\esp\coder\po\VarTypeCommon as VarTypeCommon;
+use bma\common\esp\po\VarTypeCommon as VarTypeCommon;
 
 class VarCoder implements coder\BaseCoder {
 
