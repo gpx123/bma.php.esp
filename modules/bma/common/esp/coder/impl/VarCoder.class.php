@@ -37,6 +37,44 @@ class VarCoder implements coder\BaseCoder {
         }
         return self::$_instance;
     }
+    
+    public function decoderByType($buf,$type) {
+        if ($buf instanceof coder\ByteArrayInputStream) {
+            switch ($type) {
+                case VarTypeCommon::TYPE_BOOLEAN:
+                    $coder = coder\impl\BooleanCoder::getInstance();
+                    return $coder->decoder($buf);
+                case VarTypeCommon::TYPE_INT16:
+                    $coder = coder\impl\Int16Coder::getInstance();
+                    return $coder->decoder($buf);
+                case VarTypeCommon::TYPE_INT32:
+                    $coder = coder\impl\Int32Coder::getInstance();
+                    return $coder->decoder($buf);
+                case VarTypeCommon::TYPE_INT64:
+                    $coder = coder\impl\Int64Coder::getInstance();
+                    return $coder->decoder($buf);
+                case VarTypeCommon::TYPE_UINT16:
+                    $coder = coder\impl\Uint16Coder::getInstance();
+                    return $coder->decoder($buf);
+                case VarTypeCommon::TYPE_UINT32:
+                    $coder = coder\impl\Uint32Coder::getInstance();
+                    return $coder->decoder($buf);
+                case VarTypeCommon::TYPE_UINT64:
+                    $coder = coder\impl\Uint64Coder::getInstance();
+                    return $coder->decoder($buf);
+                case VarTypeCommon::TYPE_LEN_STRING:
+                    $coder = coder\impl\LenStringCoder::getInstance();
+                    return $coder->decoder($buf);
+                case VarTypeCommon::TYPE_LIST:
+                    $coder = coder\impl\ListCoder::getInstance();
+                    return $coder->decoder($buf);
+                case VarTypeCommon::TYPE_MAP:
+                    $coder = coder\impl\MapCoder::getInstance();
+                    return $coder->decoder($buf);
+            }
+        }
+        throw new \Exception('not coder\ByteArrayInputStream type');
+    }
 
     public function decoder($buf) {
         if ($buf instanceof coder\ByteArrayInputStream) {
@@ -73,6 +111,57 @@ class VarCoder implements coder\BaseCoder {
                     $coder = coder\impl\MapCoder::getInstance();
                     return $coder->decoder($buf);
             }
+        }
+        throw new \Exception('not coder\ByteArrayInputStream type');
+    }
+    
+    public function encoderByType($buf,$obj,$type){
+        if ($buf instanceof coder\ByteArrayOutputStream) {
+            $buf->write($type);
+            switch ($type) {
+                case VarTypeCommon::TYPE_BOOLEAN:
+                    $coder = coder\impl\BooleanCoder::getInstance();
+                    $coder->encoder($buf, $obj);   
+                    return ;
+                case VarTypeCommon::TYPE_INT16:
+                    $coder = coder\impl\Int16Coder::getInstance();
+                    $coder->encoder($buf, $obj);   
+                    return ;
+                case VarTypeCommon::TYPE_INT32:
+                    $coder = coder\impl\Int32Coder::getInstance();
+                    $coder->encoder($buf, $obj);   
+                    return ;
+                case VarTypeCommon::TYPE_INT64:
+                    $coder = coder\impl\Int64Coder::getInstance();
+                    $coder->encoder($buf, $obj);   
+                    return ;
+                case VarTypeCommon::TYPE_UINT16:
+                    $coder = coder\impl\Uint16Coder::getInstance();
+                    $coder->encoder($buf, $obj);   
+                    return ;
+                case VarTypeCommon::TYPE_UINT32:
+                    $coder = coder\impl\Uint32Coder::getInstance();
+                    $coder->encoder($buf, $obj);   
+                    return ;
+                case VarTypeCommon::TYPE_UINT64:
+                    $coder = coder\impl\Uint64Coder::getInstance();
+                    $coder->encoder($buf, $obj);   
+                    return ;
+                case VarTypeCommon::TYPE_LEN_STRING:
+                    $coder = coder\impl\LenStringCoder::getInstance();
+                    $coder->encoder($buf, $obj);   
+                    return ;
+                case VarTypeCommon::TYPE_LIST:
+                    $coder = coder\impl\ListCoder::getInstance();
+                    $coder->encoder($buf, $obj);   
+                    return ;
+                case VarTypeCommon::TYPE_MAP:
+                    $coder = coder\impl\MapCoder::getInstance();
+                    $coder->encoder($buf, $obj);   
+                    return ;
+                default :
+                    throw new \Exception('not support type');
+            }         
         }
         throw new \Exception('not coder\ByteArrayInputStream type');
     }

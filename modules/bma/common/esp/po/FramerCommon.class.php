@@ -15,7 +15,7 @@
 
 namespace bma\common\esp\po;
 
-class VarTypeCommon {
+class FramerCommon {
     
     private static $_instance;
     
@@ -38,7 +38,7 @@ class VarTypeCommon {
 
     /**
      * 
-     * @return \bma\common\esp\coder\impl\LenStringCoder
+     * @return \bma\common\esp\po\FramerCommon
      */
     public static function getInstance() {
         if (!isset(self::$_instance)) {
